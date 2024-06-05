@@ -37,6 +37,17 @@
                 @enderror
             </div>
             <div class="mb-3">
+            <label for="type_id" class="form-label">Tipo</label>
+
+            <select name="type_id" id="type_id" class="form-label ">
+                <option value="">select type</option>
+                @foreach($types as $type)
+                <option value="{{$type->id}}" {{ $type->id == old('type_id') ? 'selected' : '' }}>{{$type->name}}</option>
+                
+                @endforeach
+            </select>
+        </div>
+            <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
             </div>

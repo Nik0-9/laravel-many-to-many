@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Type;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Validator; //Illuminate\Suppor\Facades\Validator
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 
 class ProjectController extends Controller
@@ -19,7 +22,7 @@ class ProjectController extends Controller
     {
         $projects = Project::all();
         return view('admin.projects.index', compact('projects'));
-        
+
     }
 
     /**
@@ -27,7 +30,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $types = Type::all();
+        return view('admin.projects.create', compact('types'));
     }
 
     /**
@@ -35,15 +39,13 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         // $form_data = $request->all();
         $form_data = $this->validation($request->all());
         $form_data['slug'] = Project::generateSlug($form_data['title']);
-        if(Project::where('slug',$form_data['slug'])){
-            $form_data['slug'] = Project::generateSlug($form_data['title']);
-        }
-        if($request->hasFile('image')){
-            $path = Storage::put('project_images',$request->image);
+       
+        if ($request->hasFile('image')) {
+            $path = Storage::put('project_images', $request->image);
             $form_data['image'] = $path;
         }
         $newProject = Project::create($form_data);
@@ -64,24 +66,25 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::all();
+        return view('admin.projects.edit', compact('project,types'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Project $project)
-    {   
+    {
         // $form_data = $request->all();
         $form_data = $this->validation($request->all());
         if ($project->title !== $form_data['title']) {
             $form_data['slug'] = Project::generateSlug($form_data['title']);
         }
-        if($request->hasFile('image')){
-            if($project->image){
+        if ($request->hasFile('image')) {
+            if ($project->image) {
                 Storage::delete($project->image);
             }
-            $path = Storage::put('project_images',$request->image);
+            $path = Storage::put('project_images', $request->image);
             $form_data['image'] = $path;
         }
         $project->update($form_data);
@@ -93,7 +96,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        if($project->image){
+        if ($project->image) {
             Storage::delete($project->image);
         }
         $project->delete();
@@ -101,25 +104,30 @@ class ProjectController extends Controller
     }
 
 
-    public function validation($data){
+    public function validation($data)
+    {
         //dd($data);
-        $validator = Validator::make($data,
-        [
-            'title' => ['required',
-            'max:200',
-            'min:3',
-            Rule::unique('projects')->ignore($data['']),
-        ],
-            'image'=> 'nullable|max:255|image',
-            'content'=>'required|'
-        ],[
-            'title.required' => 'Campo obbligatorio',
-            'title.unique' => 'Progetto già esistente',
-            'title.max' => 'Il titolo deve avere :max caratteri',
-            'title.min' => 'Il titolo deve avere :min caratteri',
-            'image.max' => 'L\'immagine deve contenere :max caratteri',
-            'content.required' => 'Campo obbligatorio'
-        ])->validate();
+        $validator = Validator::make(
+            $data,
+            [
+                'title' => [
+                    'required',
+                    'max:200',
+                    'min:3',
+                    
+                ],
+                'image' => 'nullable|max:255|image',
+                'content' => 'required',
+            ],
+            [
+                'title.required' => 'Campo obbligatorio',
+                'title.unique' => 'Progetto già esistente',
+                'title.max' => 'Il titolo deve avere :max caratteri',
+                'title.min' => 'Il titolo deve avere :min caratteri',
+                'image.max' => 'L\'immagine deve contenere :max caratteri',
+                'content.required' => 'Campo obbligatorio'
+            ]
+        )->validate();
         return $validator;
     }
 }

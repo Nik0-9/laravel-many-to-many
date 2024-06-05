@@ -21,7 +21,7 @@
         <div class="mb-3">
             <!-- nuova riga -->
             <div class="media me-4">
-                <img src="{{asset('storage/'.$project->image)}}" id="upload_preview" class="w-50 mb-3">
+                <img src="{{asset('storage/' . $project->image)}}" id="upload_preview" class="w-50 mb-3">
             </div>
             <label for="image" class="form-label">Image</label>
             <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image"
@@ -34,11 +34,18 @@
 
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" required> {{$project->content}} </textarea>
+            <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content"
+                required> {{$project->content}} </textarea>
             @error('content')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+        <select name="type_id" id="type_id" class="form-label ">
+            @foreach($types as $type)
+                <option value="{{$type->id}}" {{ $projects->id == old('type_id') ? 'selected' : '' }}>{{$type->name}}</option>
+
+            @endforeach
+        </select>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Send</button>
             <button type="reset" class="btn btn-secondary">Reset</button>

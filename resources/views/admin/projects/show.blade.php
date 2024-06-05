@@ -9,6 +9,12 @@
     <h1>{{$project->title}}</h1>
 
     <p>{{$project->content}}</p>
+    @if($project->image)
     <img src="{{asset('storage/'.$project->image)}}" alt="{{$project->title}}">
+    @endif
+    <img src="/img/user.webp" alt="{{$project->title}}" class="w-25">
+    @if ($project->type)
+    <p>tipo:{{$project->type->slug}}</p>
+    @endif
 </section>
 @endsection
