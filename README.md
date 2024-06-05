@@ -1,73 +1,221 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+cd your parent_folder_path
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+#con laravel installer
+laravel new your_project_name_here
 
-## About Laravel
+#per versione 9
+composer create-project --prefer-dist laravel/laravel:^10.0 your_project_name_here
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+cd your_project_name_here
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+code . -r
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+php artisan serve
 
-## Learning Laravel
+ctrl + c
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+npm remove postcss
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+#installo dbal per migration e seeder
+composer require doctrine/dbal
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+composer require laravel/breeze --dev
+php artisan breeze:install #blade
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+composer require pacificdev/laravel_9_preset
 
-### Premium Partners
+#solo per versione fino 10
+php artisan preset:ui bootstrap --auth
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+npm install bootstrap axios @fortawesome/fontawesome-free sass
 
-## Contributing
+#in vite config aggiungo agli alias
+'~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#copio la cartella dei webfont e se voglio la rinomino e la copio nella cartella font
 
-## Code of Conduct
+#app.js
+import "./bootstrap";
+import "~resources/scss/app.scss";
+import * as bootstrap from "bootstrap";
+import.meta.glob(["../img/**", "../fonts/**"]);
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#app.scss
+@use './partials/variables' as *;
 
-## Security Vulnerabilities
+$fa-font-path: "../fonts/webfonts" !default;
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/brands";
 
-## License
+@import '~bootstrap/scss/bootstrap';
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+#vite.config.js
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import * as path from "path";
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ["resources/scss/app.scss", "resources/js/app.js"],
+            refresh: true,
+        }),
+    ],
+    // Add resolve object and aliases
+    resolve: {
+        alias: {
+            "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
+            "~@fortawesome": path.resolve(__dirname, "node_modules/@fortawesome"),
+            "~resources": "/resources/",
+        },
+    },
+});
+
+#sistemo (cambio/rimuovo) template e routing
+
+#volendo personalizzo paginazione e pagine di errore
+php artisan vendor:publish --tag=laravel-errors
+php artisan vendor:publish --tag=laravel-pagination
+php artisan lang:publish
+
+#comandi git
+
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin your_git_url 
+git push -u origin main
+
+# copio file .env.example e lo rinomino in .env
+
+composer install
+
+php artisan key:generate
+
+npm install
+
+# creo il database da phpmyadmin
+
+# inserisco i dati per il collegamento al db in env
+
+#creo migration
+php artisan make:migration create_nome_tabella_table
+php artisan make:migration update_users_table --table=users
+php artisan make:migration add_phone_number_to_users_table
+
+#lanciare migration
+php artisan migrate
+
+#revert migration
+php artisan migrate:rollback
+
+
+#popolare il db
+php artisan make:seeder UsersTableSeeder
+
+php artisan db:seed --class=UsersTableSeeder
+
+# preparo le rotte file web.php es. 
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+# oppure resource route per tutte le operazioni CRUD
+Route::resource('books', BookController::class);
+
+# creo controller
+php artisan make:controller NomeController
+#con opzione resource controller
+php artisan make:controller NomeController --resource
+
+
+#creo model
+php artisan make:model Nome 
+#posso creare il model e contestualmente resource controller, migration, seeder e form request per validazioni
+php artisan make:model Nome -msrc --requests
+
+# creo le views relative
+
+#creo form request per validazione
+	
+php artisan make:request StoreMomemodelRequest
+
+#in app/Providers/RouteServiceProvider.php modifico
+public const HOME = '/admin';
+
+# Se l’utente non è autenticato, sarà dirottato automaticamente verso la pagina di login.
+# Questo comportamento è modificabile nel file in app/Http/Middleware/Authenticate.php
+
+php artisan make:controller Admin/DashboardController
+# nel controller
+public function index(){
+        return view('admin.dashboard');
+    }
+
+Route::middleware(['auth', 'verified'])
+   ->name('admin.')
+   ->prefix('admin')
+   ->group(function () {
+         Route::get('/', [DashboardController::class, 'index'])
+         ->name('dashboard');
+   });
+
+....
+
+Route::fallback(function() {
+    return redirect()->route('admin.dashboard');
+});
 
 #In config/filestystems.php 
 #Caricheremo i nostri file nella cartella storage/app/public
 # modifichiamo quindi e volendo anche env file modifica chiave FILESYSTEM_DRIVER=public
 'default' => env('FILESYSTEM_DRIVER', 'public'),
+
 #lanciare comando
 php artisan storage:link
+
+#salvare
+Storage::put('nomecartella', $data['image']); //ritorna il path
+#or
+$path = Storage::putFileAs(
+    'avatars', $request->file('avatar'), $name
+);
+
+#per visualizzare 
+<img src="{{ asset('storage/' . $post->cover_image) }}">
+....
+
+#migration di esempio 
+
+#up
+Schema::table('posts', function (Blueprint $table) {
+
+    $table->unsignedBigInteger('user_id');
+    $table->foreign('user_id')
+        ->references('id')
+        ->on('users')->cascadeOnDelete();
+});
+# shortcut
+	
+$table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+#down
+
+$table->dropForeign('posts_user_id_foreign');
+$table->dropColumn('user_id');
+
+#nei model
+#editare i model con relazioni e fillable o guarded
+#use Illuminate\Database\Eloquent\Relations\HasMany;
+
+protected $guarded = [];
+
+public function products():HasMany
+{
+   return $this->hasMany(Product::class);
+}
+
