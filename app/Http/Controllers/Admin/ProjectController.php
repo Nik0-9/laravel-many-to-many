@@ -67,7 +67,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project,types'));
+        return view('admin.projects.edit', compact('project','types'));
     }
 
     /**
@@ -118,6 +118,7 @@ class ProjectController extends Controller
                 ],
                 'image' => 'nullable|max:255|image',
                 'content' => 'required',
+                'type_id' => 'nullable'
             ],
             [
                 'title.required' => 'Campo obbligatorio',

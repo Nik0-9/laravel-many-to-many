@@ -42,7 +42,7 @@
         </div>
         <select name="type_id" id="type_id" class="form-label ">
             @foreach($types as $type)
-                <option value="{{$type->id}}" {{ $projects->id == old('type_id') ? 'selected' : '' }}>{{$type->name}}</option>
+                <option value="{{$type->id}}" {{ $project->id == old('type_id') ? 'selected' : '' }}>{{$type->name}}</option>
 
             @endforeach
         </select>
