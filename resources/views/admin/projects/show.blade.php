@@ -3,18 +3,25 @@
 
 @section('content')
 <section>
-    @if(session()->has('message'))
+  @if(session()->has('message'))
     <div class="alert alert-success">{{session()->get('message')}}</div>
   @endif
-    <h1>{{$project->title}}</h1>
+  <h1>{{$project->title}}</h1>
 
-    <p>{{$project->content}}</p>
-    @if($project->image)
-    <img src="{{asset('storage/'.$project->image)}}" alt="{{$project->title}}">
-    @endif
-    <img src="/img/user.webp" alt="{{$project->title}}" class="w-25">
-    @if ($project->type)
+  <p>{{$project->content}}</p>
+  @if($project->image)
+    <img src="{{asset('storage/' . $project->image)}}" alt="{{$project->title}}">
+  @endif
+  <img src="/img/user.webp" alt="{{$project->title}}" class="w-25">
+  @if ($project->type)
     <p>tipo:{{$project->type->slug}}</p>
-    @endif
+  @endif
+  <div>
+    @if($project->technologies)
+    @foreach ($project->technologies as $technology)
+    <span class="badge text-bg-danger">{{$technology->name}}</span>
+  @endforeach
+  @endif
+  </div>
 </section>
 @endsection

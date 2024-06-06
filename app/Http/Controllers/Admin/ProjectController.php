@@ -51,6 +51,9 @@ class ProjectController extends Controller
             $form_data['image'] = $path;
         }
         $newProject = Project::create($form_data);
+        if($request->has('technologies')){
+            $newProject->technologies()->attach($request->technologies);
+        }
         return redirect()->route('admin.projects.show', $newProject->slug)->with('message', $form_data['title'] . ' è stato creato');
 
     }
@@ -92,6 +95,11 @@ class ProjectController extends Controller
             $form_data['image'] = $path;
         }
         $project->update($form_data);
+        if($request->has('technologies')){
+            $project->technologies()->sync($request->technologies);
+        }else{
+            $project->technologies()->sync([]);
+        }
         return redirect()->route('admin.projects.show', compact('project'))->with('message', $project->title . ' è stato editato');
     }
 
