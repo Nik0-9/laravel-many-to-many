@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Type')
+@section('title', 'Create Tag')
 
 @section('content')
     <section>
-        <h2>Create a new type</h2>
-        <form action="{{ route('admin.types.store') }}" method="POST" enctype="multipart/form-data">
+        <h2>Create a new tag</h2>
+        <form action="{{ route('admin.tags.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Titolo</label>
+                <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
                     value="{{ old('name') }}" minlength="3" maxlength="200" required>
                 @error('name')
@@ -16,7 +16,6 @@
                 @enderror
                 <div id="nameHelp" class="form-text text-white">Inserire minimo 3 caratteri e massimo 200</div>
             </div>
-
 
             <div class="mb-3">
                 <button type="submit" class="btn btn-danger">Create</button>

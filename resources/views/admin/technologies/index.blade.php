@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Tecnologies')
+@section('title', 'Technologies')
 
 @section('content')
 <section class="container">
@@ -7,9 +7,9 @@
     <div class="alert alert-success">{{session()->get('message')}}</div>
   @endif
   <div class="d-flex justify-content-between align-items-center py-4">
-    <h1>Tecnologies</h1>
-    <a href="{{route('admin.tecnologies.create')}}" class="btn btn-primary">
-      Crea nuova tecnology
+    <h1>Technologies</h1>
+    <a href="{{route('admin.technologies.create')}}" class="btn btn-primary">
+      Crea nuova technology
     </a>
   </div>
 
@@ -25,25 +25,25 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($tecnologies as $tecnology)
+      @foreach ($technologies as $technology)
       <tr>
-      <td>{{$tecnology->id}}</td>
-      <td>{{$tecnology->name}}</td>
-      <td>{{$tecnology->slug}}</td>
-      <td>{{$tecnology->created_at}}</td>
-      <td>{{$tecnology->updated_at}}</td>
+      <td>{{$technology->id}}</td>
+      <td>{{$technology->name}}</td>
+      <td>{{$technology->slug}}</td>
+      <td>{{$technology->created_at}}</td>
+      <td>{{$technology->updated_at}}</td>
       <td>
         <div class="d-flex align-items-center gap-2">
-        <a href="{{route('admin.tecnologies.show', $tecnology->slug)}}">
+        <a href="{{route('admin.technologies.show', $technology->slug)}}">
           <i class="fa-solid fa-eye"></i>
         </a>
-        <a href="{{route('admin.tecnologies.edit', $tecnology->slug)}}">
+        <a href="{{route('admin.technologies.edit', $technology->slug)}}">
           <i class="fa-solid fa-pen"></i>
         </a>
-        <form action="{{route('admin.tecnologies.destroy', $tecnology->slug)}}" method="POST">
+        <form action="{{route('admin.technologies.destroy', $technology->slug)}}" method="POST">
           @csrf
           @method('DELETE')
-          <button type="submit" class="delete-button btn fs-6 p-0" data-item-title="{{$tecnology->title}}">
+          <button type="submit" class="delete-button btn fs-6 p-0" data-item-title="{{$technology->title}}">
           <i class="fa-solid fa-trash" style="color: #0A58CA;"></i>
           </button>
 

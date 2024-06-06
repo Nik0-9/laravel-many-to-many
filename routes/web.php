@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\TecnologyController;
+use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\ProfileController;
@@ -25,7 +25,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('projects', ProjectController::class)->parameters(['projects' => 'project:slug']);
     Route::resource('types', TypeController::class)->parameters(['types' => 'type:slug']);
-    Route::resource('tecnologies', TecnologyController::class)->parameters(['tecnologies' => 'tecnology:slug']);
+    Route::resource('technologies', TechnologyController::class)->parameters(['technologies' => 'tecnology:slug']);
 
 });
 

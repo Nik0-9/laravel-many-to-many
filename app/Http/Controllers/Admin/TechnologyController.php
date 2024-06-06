@@ -15,15 +15,17 @@ class TechnologyController extends Controller
      */
     public function index()
     {
-        //
+        $technologies = Technology::all();
+        return view('admin.technologies.index', compact('technologies'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
+        return view('admin.technologies.create');
     }
 
     /**
@@ -31,7 +33,13 @@ class TechnologyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+        ]);
+        $form_data = $request->all();
+        $form_data['slug'] = Technology::generateSlug($form_data['name']);
+        $newTechnology = Technology::create($form_data);
+        return redirect()->route('admin.technologies.show', $newTechnology->slug);
     }
 
     /**
