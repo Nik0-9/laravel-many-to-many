@@ -6,8 +6,10 @@
   @if(session()->has('message'))
     <div class="alert alert-success">{{session()->get('message')}}</div>
   @endif
-  <h1>{{$project->title}}</h1>
-
+  <div class="d-flex justify-content-between align-items-center py-4">
+    <h1>{{$project->title}}</h1>
+    <a href="{{route('admin.projects.edit', $project->slug)}}" class="btn btn-primary">Edit project</a>
+  </div>
   <p>{{$project->content}}</p>
   @if($project->image)
     <img src="{{asset('storage/' . $project->image)}}" alt="{{$project->title}}">

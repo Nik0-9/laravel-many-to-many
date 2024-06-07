@@ -7,7 +7,7 @@
     <section>
         <div class="d-flex justify-content-between align-items-center py-4">
             <h2>Edit type: {{$type->name}}</h2>
-            <a href="{{route('admin.types.show', $type->slug)}}" class="btn btn-danger">Show type</a>
+            <a href="{{route('admin.types.show', $type->slug)}}" class="btn btn-primary">Show type</a>
         </div>
 
         <form action="{{ route('admin.types.update', $type->slug) }}" method="POST" enctype="multipart/form-data">

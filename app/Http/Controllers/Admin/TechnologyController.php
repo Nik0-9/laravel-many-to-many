@@ -47,7 +47,7 @@ class TechnologyController extends Controller
      */
     public function show(Technology $technology)
     {
-        //
+        return view('admin.technologies.show',compact('technology'));
     }
 
     /**
@@ -55,7 +55,7 @@ class TechnologyController extends Controller
      */
     public function edit(Technology $technology)
     {
-        //
+        return view('admin.technologies.edit',compact('technology'));
     }
 
     /**
@@ -63,7 +63,15 @@ class TechnologyController extends Controller
      */
     public function update(Request $request, Technology $technology)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+        ]);
+        $form_data = $request->all();
+        if ($technology->name !== $form_data['name']) {
+            $form_data['slug'] = Technology::generateSlug($form_data['name']);
+        }
+        $technology->update($form_data);
+        return redirect()->route('admin.technologies.show', $technology->slug);
     }
 
     /**
@@ -71,6 +79,7 @@ class TechnologyController extends Controller
      */
     public function destroy(Technology $technology)
     {
-        //
+        $technology->delete();
+        return redirect()->route('admin.technologies.index')->with('message', $technology->name . ' è stato eliminato');
     }
 }

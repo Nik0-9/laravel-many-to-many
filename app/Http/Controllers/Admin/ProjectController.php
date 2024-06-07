@@ -9,6 +9,7 @@ use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Validator; //Illuminate\Suppor\Facades\Validator
+use Illuminate\Validation\Rule;
 
 
 class ProjectController extends Controller
@@ -116,7 +117,7 @@ class ProjectController extends Controller
     }
 
 
-    public function validation($data)
+    public function validationStore($data)
     {
         //dd($data);
         $validator = Validator::make(
@@ -126,18 +127,47 @@ class ProjectController extends Controller
                     'required',
                     'max:200',
                     'min:3',
-                    
                 ],
-                'image' => 'nullable|max:255|image',
+                'image' => 'nullable|file|size:1024',
                 'content' => 'required',
-                'type_id' => 'nullable'
+                'type_id' => 'nullable|exists:types,id',
+                'technology' => 'nullable|exists:tecnology,id'
+
             ],
             [
                 'title.required' => 'Campo obbligatorio',
                 'title.unique' => 'Progetto già esistente',
                 'title.max' => 'Il titolo deve avere :max caratteri',
                 'title.min' => 'Il titolo deve avere :min caratteri',
-                'image.max' => 'L\'immagine deve contenere :max caratteri',
+                'image.max' => 'L\'immagine non puo\' superare :size kilobytes',
+                'content.required' => 'Campo obbligatorio'
+                ]
+                )->validate();
+                return $validator;
+            }
+            public function validationUpdate($data,Project $project)
+            {
+                //dd($data);
+        $validator = Validator::make(
+            $data,
+            [
+                'title' => [
+                    'required',
+                    'max:200',
+                    'min:3',
+                    Rule::unique('projects')->ignore($project->id)
+                ],
+                'image' => 'nullable|file|size:1024',
+                'content' => 'required',
+                'type_id' => 'nullable|exists:types,id',
+                'technology' => 'nullable'
+            ],
+            [
+                'title.required' => 'Campo obbligatorio',
+                'title.unique' => 'Progetto già esistente',
+                'title.max' => 'Il titolo deve avere :max caratteri',
+                'title.min' => 'Il titolo deve avere :min caratteri',
+                'image.max' => 'L\'immagine non puo\' superare :size kilobytes',
                 'content.required' => 'Campo obbligatorio'
             ]
         )->validate();
